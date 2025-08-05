@@ -1,10 +1,12 @@
 import 'package:blocsocialapp/features/authentication/domain/entities/app_user.dart';
 import 'package:blocsocialapp/features/authentication/domain/repository/authentication_repository.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FirebaseAuthenticationRepository implements AuthenticationRepository {
 
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
     @override
     Future<AppUser?> getCurrentUser() async {
@@ -55,6 +57,8 @@ class FirebaseAuthenticationRepository implements AuthenticationRepository {
                 email: email,
                 name: name,
             );
+
+            await firebaseFirestore.collection("users").doc(user.uid).set(user.toJson());
 
             return user;
         } catch (e) {
