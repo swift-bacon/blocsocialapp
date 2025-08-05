@@ -2,7 +2,7 @@ import 'package:blocsocialapp/features/authentication/data/firebase_authenticati
 import 'package:blocsocialapp/features/authentication/presentation/cubits/authentication_cubit.dart';
 import 'package:blocsocialapp/features/authentication/presentation/cubits/authentication_state.dart';
 import 'package:blocsocialapp/features/authentication/presentation/pages/authentication_page.dart';
-import 'package:blocsocialapp/features/post/presentation/pages/home_page.dart';
+import 'package:blocsocialapp/features/home/presentation/pages/home_page.dart';
 import 'package:blocsocialapp/themes/light_mode.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
