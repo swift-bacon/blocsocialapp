@@ -1,3 +1,5 @@
+import 'package:blocsocialapp/features/authentication/presentation/pages/login_page.dart';
+import 'package:blocsocialapp/themes/light_mode.dart';
 import 'package:flutter/material.dart';
 
 class Application extends StatelessWidget {
@@ -6,11 +8,9 @@ class Application extends StatelessWidget {
     @override
     Widget build(BuildContext context) {
         return MaterialApp(
-            title: 'Flutter Demo',
-            theme: ThemeData(
-                colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-            ),
-            home: Container(),
+            debugShowCheckedModeBanner: false,
+            theme: lightMode,
+            home: LoginPage(),
         );
     }
 }
