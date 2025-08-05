@@ -1,6 +1,8 @@
 import 'package:blocsocialapp/features/authentication/presentation/components/default_button.dart';
 import 'package:blocsocialapp/features/authentication/presentation/components/default_text_field.dart';
+import 'package:blocsocialapp/features/authentication/presentation/cubits/authentication_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RegisterPage extends StatefulWidget {
 
@@ -25,7 +27,21 @@ class _RegisterPageState extends State<RegisterPage> {
         final String password = _passwordController.text;
         final String rePassword = _rePasswordController.text;
 
-        
+        final authCubit = context.read<AuthenticationCubit>();
+
+        if (name.isNotEmpty && email.isNotEmpty && password.isNotEmpty && rePassword.isNotEmpty) {
+            if (password == rePassword) {
+                authCubit.authRepo.registerWithEmailPassword(name, email, password);
+            } else {
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text('Passwords do not match.'),
+                ));
+            }
+        } else {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text('Fill all register form fields'),
+            ));
+        }
     }
 
     @override
@@ -61,11 +77,10 @@ class _RegisterPageState extends State<RegisterPage> {
                                     ),
                                 ),
                                 const SizedBox(height: 45,),
-
                                 DefaultTextField(
                                     controller: _nameController,
                                     placeholder: 'Enter name',
-                                    obscureText: true,
+                                    obscureText: false,
                                 ),
                                 const SizedBox(height: 15,),
                                 DefaultTextField(
