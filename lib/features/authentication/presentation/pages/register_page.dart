@@ -1,43 +1,39 @@
 import 'package:blocsocialapp/features/authentication/presentation/components/default_button.dart';
 import 'package:blocsocialapp/features/authentication/presentation/components/default_text_field.dart';
-import 'package:blocsocialapp/features/authentication/presentation/cubits/authentication_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-class LoginPage extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
 
     final void Function()? onTogglePage;
 
-    const LoginPage({super.key, required this.onTogglePage});
+    const RegisterPage({super.key, required this.onTogglePage});
 
     @override
-    State<LoginPage> createState() => _LoginPageState();
+    State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
 
+    final _nameController = TextEditingController();
     final _emailController = TextEditingController();
     final _passwordController = TextEditingController();
+    final _rePasswordController = TextEditingController();
 
-    void login() {
+    void register() {
+        final String name = _nameController.text;
         final String email = _emailController.text;
         final String password = _passwordController.text;
+        final String rePassword = _rePasswordController.text;
 
-        final authCubit = context.read<AuthenticationCubit>();
-
-        if (email.isEmpty && password.isNotEmpty) {
-            authCubit.login(email, password);
-        } else {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                content: Text('Please enter both email and password'),
-            ));
-        }
+        
     }
 
     @override
     void dispose() {
+        _nameController.dispose();
         _emailController.dispose();
         _passwordController.dispose();
+        _rePasswordController.dispose();
         super.dispose();
     }
 
@@ -58,13 +54,20 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                                 const SizedBox(height: 50,),
                                 Text(
-                                    'Welcome back, you have been missed!',
+                                    "Let's create an account for you",
                                     style: TextStyle(
                                         color: Theme.of(context).colorScheme.primary,
                                         fontSize: 16,
                                     ),
                                 ),
                                 const SizedBox(height: 45,),
+
+                                DefaultTextField(
+                                    controller: _nameController,
+                                    placeholder: 'Enter name',
+                                    obscureText: true,
+                                ),
+                                const SizedBox(height: 15,),
                                 DefaultTextField(
                                     controller: _emailController,
                                     placeholder: 'Enter email',
@@ -76,17 +79,25 @@ class _LoginPageState extends State<LoginPage> {
                                     placeholder: 'Enter password',
                                     obscureText: true,
                                 ),
+                                const SizedBox(height: 15,),
+                                DefaultTextField(
+                                    controller: _rePasswordController,
+                                    placeholder: 'Confirm password',
+                                    obscureText: true,
+                                ),
                                 const SizedBox(height: 45,),
                                 DefaultButton(
-                                    onTap: login,
-                                    text: 'Login'
+                                    onTap: () {
+
+                                    },
+                                    text: 'Register'
                                 ),
                                 const SizedBox(height: 35,),
                                 Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                         Text(
-                                            'Not a member? ',
+                                            'Already a member?',
                                             style: TextStyle(
                                                 color: Theme.of(context).colorScheme.primary,
                                             ),
@@ -94,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
                                         GestureDetector(
                                             onTap: widget.onTogglePage,
                                             child: Text(
-                                                'Register now',
+                                                ' Login now',
                                                 style: TextStyle(
                                                     color: Theme.of(context).colorScheme.inversePrimary,
                                                     fontWeight: FontWeight.bold,
