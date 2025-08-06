@@ -3,6 +3,7 @@ import 'package:blocsocialapp/features/authentication/presentation/cubits/authen
 import 'package:blocsocialapp/features/profile/presentation/components/user_bio_box.dart';
 import 'package:blocsocialapp/features/profile/presentation/cubits/profile_cubit.dart';
 import 'package:blocsocialapp/features/profile/presentation/cubits/profile_states.dart';
+import 'package:blocsocialapp/features/profile/presentation/pages/edit_profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -46,7 +47,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 onPressed: () => Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => EditProfilePage(),
+                                        builder: (context) => EditProfilePage(user: user,),
                                     ),
                                 ),
                                 icon: const Icon(
