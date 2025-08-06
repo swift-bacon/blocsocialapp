@@ -36,7 +36,12 @@ class AppDrawer extends StatelessWidget {
                                 title: "Profile",
                                 icon: Icons.person,
                                 onTap: () {
-                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProfilePage()));
+                                    Navigator.of(context).pop();
+
+                                    final user = context.read<AuthenticationCubit>().currentUser;
+                                    String? uid = user!.uid;
+
+                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProfilePage(uid: uid)));
                                 },
                             ),
                             AppDrawerTile(
