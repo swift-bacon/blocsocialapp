@@ -8,6 +8,18 @@ class UserBioBox extends StatelessWidget {
 
     @override
     Widget build(BuildContext context) {
-        return const Placeholder();
+        return Container(
+            padding: EdgeInsets.all(25),
+            decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.secondary,
+            ),
+            width: double.infinity,
+            child: Text(
+                text.isNotEmpty ? text : 'Empty bio',
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.inversePrimary,
+                ),
+            ),
+        );
     }
 }

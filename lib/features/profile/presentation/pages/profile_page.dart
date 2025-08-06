@@ -1,5 +1,6 @@
 import 'package:blocsocialapp/features/authentication/domain/entities/app_user.dart';
 import 'package:blocsocialapp/features/authentication/presentation/cubits/authentication_cubit.dart';
+import 'package:blocsocialapp/features/profile/presentation/components/user_bio_box.dart';
 import 'package:blocsocialapp/features/profile/presentation/cubits/profile_cubit.dart';
 import 'package:blocsocialapp/features/profile/presentation/cubits/profile_states.dart';
 import 'package:flutter/material.dart';
@@ -40,42 +41,75 @@ class _ProfilePageState extends State<ProfilePage> {
                             user.name,
                         ),
                         foregroundColor: Theme.of(context).colorScheme.primary,
+                        actions: [
+                            IconButton(
+                                onPressed: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => EditProfilePage(),
+                                    ),
+                                ),
+                                icon: const Icon(
+                                    Icons.settings,
+                                )
+                            )
+                        ],
                     ),
-                    body: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                      child: Column(
-                          children: [
-                              Text(
-                                  user.email,
-                                  style: TextStyle(
-                                      color: Theme.of(context).colorScheme.secondary,
-                                  ),
-                              ),
-                              const SizedBox(height: 25,),
-                              Container(
-                                  decoration: BoxDecoration(
-                                      color: Theme.of(context).colorScheme.secondary,
-                                      borderRadius: BorderRadius.circular(60),
-                                  ),
-                                  height: 120,
-                                  width: 120,
-                                  padding: const EdgeInsets.all(25),
-                                  child: Center(
-                                      child: Icon(
-                                          Icons.percent,
-                                          size: 72,
-                                          color: Theme.of(context).colorScheme.primary,
-                                      ),
-                                  ),
-                              ),
-                              const SizedBox(height: 25,),
-                              Row(
+                    body: Column(
+                        children: [
+                            Text(
+                                user.email,
+                                style: TextStyle(
+                                    color: Theme.of(context).colorScheme.secondary,
+                                ),
+                            ),
+                            const SizedBox(height: 25,),
+                            Container(
+                                decoration: BoxDecoration(
+                                    color: Theme.of(context).colorScheme.secondary,
+                                    borderRadius: BorderRadius.circular(60),
+                                ),
+                                height: 120,
+                                width: 120,
+                                padding: const EdgeInsets.all(25),
+                                child: Center(
+                                    child: Icon(
+                                        Icons.percent,
+                                        size: 72,
+                                        color: Theme.of(context).colorScheme.primary,
+                                    ),
+                                ),
+                            ),
+                            const SizedBox(height: 25,),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 25.0),
+                              child: Row(
                                   children: [
-                                      
+                                      Text(
+                                          'User bio',
+                                          style: TextStyle(
+                                              color: Theme.of(context).colorScheme.primary,
+                                          ),
+                                      )
                                   ],
-                              )
-                          ],
-                      ),
+                              ),
+                            ),
+                            const SizedBox(height: 10,),
+                            UserBioBox(text: user.bio),
+                            Padding(
+                                padding: const EdgeInsets.only(left: 25.0, top: 25.0),
+                                child: Row(
+                                    children: [
+                                        Text(
+                                            'User posts',
+                                            style: TextStyle(
+                                                color: Theme.of(context).colorScheme.primary,
+                                            ),
+                                        )
+                                    ],
+                                ),
+                            ),
+                        ],
                     )
                 );
             }
