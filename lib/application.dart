@@ -3,6 +3,8 @@ import 'package:blocsocialapp/features/authentication/presentation/cubits/authen
 import 'package:blocsocialapp/features/authentication/presentation/cubits/authentication_state.dart';
 import 'package:blocsocialapp/features/authentication/presentation/pages/authentication_page.dart';
 import 'package:blocsocialapp/features/home/presentation/pages/home_page.dart';
+import 'package:blocsocialapp/features/post/data/firebase_post_repository.dart';
+import 'package:blocsocialapp/features/post/presentation/cubits/post_cubit.dart';
 import 'package:blocsocialapp/features/profile/data/firebase_profile_repository.dart';
 import 'package:blocsocialapp/features/profile/presentation/cubits/profile_cubit.dart';
 import 'package:blocsocialapp/themes/light_mode.dart';
@@ -13,6 +15,7 @@ class Application extends StatelessWidget {
 
     final authenticationRepo = FirebaseAuthenticationRepository();
     final profileRepo = FirebaseProfileRepository();
+    final postRepository = FirebasePostRepository();
 
     Application({super.key});
 
@@ -21,43 +24,44 @@ class Application extends StatelessWidget {
         return MultiBlocProvider(
             providers: [
                 BlocProvider<AuthenticationCubit>(
-                    create: (context) => AuthenticationCubit(authRepo: authenticationRepo)..checkAuth()
+                    create: (context) =>
+                    AuthenticationCubit(authRepo: authenticationRepo)..checkAuth(),
                 ),
-
                 BlocProvider<ProfileCubit>(
-                    create: (context) => ProfileCubit(profileRepository: profileRepo)
+                    create: (context) => ProfileCubit(profileRepository: profileRepo),
+                ),
+                BlocProvider<PostCubit>(
+                    create: (context) => PostCubit(postRepository: postRepository),
                 ),
             ],
-            child: MaterialApp(
-                debugShowCheckedModeBanner: false,
-                theme: lightMode,
-                home: BlocConsumer<AuthenticationCubit, AuthenticationState>(
-                    builder: (context, authState) {
-                        if (authState is Unauthenticated) {
-                            return const AuthenticationPage();
-                        }
+            child: BlocConsumer<AuthenticationCubit, AuthenticationState>(
+                listener: (context, state) {
+                    if (state is AuthenticationError) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(state.message)),
+                        );
+                    }
+                },
+                builder: (context, authState) {
+                    Widget home;
 
-                        if (authState is Authenticated) {
-                            return const HomePage();
-                        }
+                    if (authState is Unauthenticated) {
+                        home = const AuthenticationPage();
+                    } else if (authState is Authenticated) {
+                        home = const HomePage();
+                    } else {
+                        home = const Scaffold(
+                            body: Center(child: CircularProgressIndicator()),
+                        );
+                    }
 
-                        else {
-                            return const Scaffold(
-                                body: Center(
-                                    child: CircularProgressIndicator(),
-                                ),
-                            );
-                        }
-                    },
-                    listener: (context, state) {
-                        if (state is AuthenticationError) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text(
-                                    state.message,
-                                ),)
-                            );
-                        }
-                    }),
-            ),);
+                    return MaterialApp(
+                        debugShowCheckedModeBanner: false,
+                        theme: lightMode,
+                        home: home,
+                    );
+                },
+            ),
+        );
     }
 }

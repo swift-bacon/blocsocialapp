@@ -102,9 +102,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 ),
                                 const SizedBox(height: 45,),
                                 DefaultButton(
-                                    onTap: () {
-
-                                    },
+                                    onTap: register,
                                     text: 'Register'
                                 ),
                                 const SizedBox(height: 35,),

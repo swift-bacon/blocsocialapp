@@ -1,8 +1,7 @@
+import 'package:blocsocialapp/features/post/domain/entities/post.dart';
 import 'package:blocsocialapp/features/post/domain/repository/post_repository.dart';
 import 'package:blocsocialapp/features/post/presentation/cubits/post_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../domain/entities/post.dart';
 
 class PostCubit extends Cubit<PostState> {
     final PostRepository postRepository;
@@ -12,6 +11,7 @@ class PostCubit extends Cubit<PostState> {
     Future<void> createPost(Post post) async {
         try {
             postRepository.createPost(post);
+            fetchAllPosts();
         } catch (e) {
             emit(PostsError('Failed to create post: $e'));
         }

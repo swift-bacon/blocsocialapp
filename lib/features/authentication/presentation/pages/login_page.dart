@@ -25,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
 
         final authCubit = context.read<AuthenticationCubit>();
 
-        if (email.isEmpty && password.isNotEmpty) {
+        if (email.isNotEmpty && password.isNotEmpty) {
             authCubit.login(email, password);
         } else {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

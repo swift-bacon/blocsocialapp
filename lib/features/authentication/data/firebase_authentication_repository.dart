@@ -16,10 +16,19 @@ class FirebaseAuthenticationRepository implements AuthenticationRepository {
             return null;
         }
 
+        DocumentSnapshot userDoc = await firebaseFirestore
+            .collection('users')
+            .doc(firebaseUser.uid)
+            .get();
+
+        if (!userDoc.exists) {
+            return null;
+        }
+
         return AppUser(
             uid: firebaseUser.uid,
             email: firebaseUser.email!,
-            name: ''
+            name: userDoc['name'],
         );
     }
 
@@ -28,11 +37,16 @@ class FirebaseAuthenticationRepository implements AuthenticationRepository {
         try {
             UserCredential userCredential = await firebaseAuth
                 .signInWithEmailAndPassword(email: email, password: password);
+
+            DocumentSnapshot userDoc = await firebaseFirestore
+                .collection('users')
+                .doc(userCredential.user!.uid)
+                .get();
             
             AppUser user = AppUser(
                 uid: userCredential.user!.uid,
                 email: email,
-                name: '',
+                name: userDoc['name'],
             );
 
             return user;
